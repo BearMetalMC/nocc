@@ -1,0 +1,8 @@
+{
+  "nocc.options.confirm_mode": "Command Confirmations",
+  "nocc.options.confirm_mode.dangerous_only": "Only for potentially dangerous commands",
+  "nocc.options.confirm_mode.off": "Disabled (be cautious, here be dragons)",
+  "nocc.options.confirm_mode.safe_list_only": "Disabled for non-approved items",
+  "nocc.options.confirm_mode.tooltip": "Determine when the \"Confirm Command Execution\" permission pop up occurs",
+  "nocc.options.confirm_mode.vanilla": "Vanilla"
+}
