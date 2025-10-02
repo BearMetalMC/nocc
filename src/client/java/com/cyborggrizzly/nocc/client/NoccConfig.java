@@ -74,7 +74,6 @@ public class NoccConfig {
         }
     }
 
-    // compiled at load:
     public transient List<java.util.regex.Pattern> confirm = new ArrayList<>();
     public transient List<java.util.regex.Pattern> bypass = new ArrayList<>();
 
@@ -92,16 +91,14 @@ public class NoccConfig {
     public static SimpleOption<ConfirmMode> confirmModeOption() {
         var cfg = NoccConfig.get();
 
-        // Label on the left:
         Codec<ConfirmMode> codec = Codec.STRING.xmap(
                 s -> ConfirmMode.valueOf(s.toUpperCase(java.util.Locale.ROOT)),
                 m -> m.name().toLowerCase(java.util.Locale.ROOT)
         );
 
         return new SimpleOption<ConfirmMode>(
-                "nocc.options.confirm_mode",    // translation key for the label
+                "nocc.options.confirm_mode",
                 t -> Tooltip.of(Text.translatable("nocc.options.confirm_mode.tooltip")),
-//                SimpleOption.emptyTooltip(),
                 (opt, value) ->
                         Text.translatable("nocc.options.confirm_mode." + value.name().toLowerCase()),                         // value text mapper
                 new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(ConfirmMode.values()), codec),

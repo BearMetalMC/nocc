@@ -6,7 +6,8 @@
   "client": [
     "ClientPlayNetworkHandlerMixin",
     "OnlineOptionScreenMixin",
-    "GameOptionsScreenAccessor"
+    "GameOptionsScreenAccessor",
+    "OptionListWidgetInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

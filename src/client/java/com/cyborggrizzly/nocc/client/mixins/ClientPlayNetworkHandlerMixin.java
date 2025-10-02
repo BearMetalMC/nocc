@@ -15,32 +15,60 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+//@Mixin(ClientPlayNetworkHandler.class)
+//public abstract class ClientPlayNetworkHandlerMixin {
+//
+//    @Inject(method = "parseCommand", at = @At("RETURN"), cancellable = true)
+//    private void nocc$policyAdjust(String command, CallbackInfoReturnable cir) {
+//        var cfg = NoccConfig.get();
+//
+//        Enum<?> current = (Enum<?>) cir.getReturnValue();
+//        if (current == null) return;
+//
+//        String name = current.name();
+//        if ("SIGNATURE_REQUIRED".equals(name)) return;
+//
+//        boolean bypass;
+//        switch (cfg.mode) {
+//            case OFF -> bypass = true;
+//            case VANILLA -> bypass = false;
+//            case DANGEROUS_ONLY -> bypass = !cfg.matchesAny(command, cfg.confirm);
+//            case SAFE_LIST_ONLY -> bypass = cfg.matchesAny(command, cfg.bypass);
+//            default -> bypass = false;
+//        }
+//
+//        String desired = bypass ? "NO_ISSUES" : "PERMISSIONS_REQUIRED";
+//        if (!name.equals(desired)) {
+//            @SuppressWarnings({ "unchecked", "rawtypes" })
+//            Enum<?> replacement = Enum.valueOf((Class) current.getClass(), desired);
+//            cir.setReturnValue(replacement);
+//        }
+//    }
+//}
+
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Inject(method = "parseCommand", at = @At("RETURN"), cancellable = true)
     private void nocc$policyAdjust(String command, CallbackInfoReturnable cir) {
         var cfg = NoccConfig.get();
+        Object ret = cir.getReturnValue();
+        if (!(ret instanceof Enum<?> e)) return;
 
-        Enum<?> current = (Enum<?>) cir.getReturnValue();
-        if (current == null) return;
+        String name = e.name();
+        if ("SIGNATURE_REQUIRED".equals(name)) return; // keep safety
 
-        String name = current.name();
-        if ("SIGNATURE_REQUIRED".equals(name)) return;
-
-        boolean bypass;
-        switch (cfg.mode) {
-            case OFF -> bypass = true;
-            case VANILLA -> bypass = false;
-            case DANGEROUS_ONLY -> bypass = !cfg.matchesAny(command, cfg.confirm);
-            case SAFE_LIST_ONLY -> bypass = cfg.matchesAny(command, cfg.bypass);
-            default -> bypass = false;
-        }
+        boolean bypass = switch (cfg.mode) {
+            case OFF -> true;
+            case DANGEROUS_ONLY -> !cfg.matchesAny(command, cfg.confirm);
+            case SAFE_LIST_ONLY ->  cfg.matchesAny(command, cfg.bypass);
+            default -> false;
+        };
 
         String desired = bypass ? "NO_ISSUES" : "PERMISSIONS_REQUIRED";
         if (!name.equals(desired)) {
-            @SuppressWarnings({ "unchecked", "rawtypes" })
-            Enum<?> replacement = Enum.valueOf((Class) current.getClass(), desired);
+            Enum<?> replacement = Enum.valueOf((Class) e.getDeclaringClass(), desired);
             cir.setReturnValue(replacement);
         }
     }
