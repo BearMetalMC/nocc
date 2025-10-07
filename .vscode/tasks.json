@@ -1,0 +1,87 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Client",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["runClient", "--console=plain"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        // "echo": true,
+        "reveal": "always",
+        // "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "windows": { "command": "./gradlew.bat" }
+    },
+    {
+      "label": "Run Server",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["runServer", "--console=plain"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        // "echo": true,
+        "reveal": "always",
+        // "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "windows": { "command": "./gradlew.bat" }
+    },
+    {
+      "label": "Run Client (bg)",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["runClient", "--console=plain"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "windows": { "command": "./gradlew.bat" },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "custom",
+          "fileLocation": "absolute",
+          "pattern": [
+            { "regexp": "^(.*)$" }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".*Task :runClient.*",
+            "endsPattern": ".*Listening for transport dt_socket at address: 5005.*"
+          }
+        }
+      ],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Run Server (bg)",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["runServer", "--console=plain"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "windows": { "command": "./gradlew.bat" },
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "custom",
+          "fileLocation": "absolute",
+          "pattern": [
+            { "regexp": "^(.*)$" }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".*Task :runServer.*",
+            "endsPattern": ".*Listening for transport dt_socket at address: 5006.*"
+          }
+        }
+      ],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

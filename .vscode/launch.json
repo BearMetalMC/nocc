@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach Client (5005)",
+      "type": "java",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "preLaunchTask": "Run Client (bg)"
+    },
+    {
+      "name": "Attach Server (5006)",
+      "type": "java",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5006,
+      "preLaunchTask": "Run Server (bg)"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Client + Server (attach)",
+      "configurations": [
+        "Attach Client (5005)",
+        "Attach Server (5006)"
+      ],
+      "stopAll": true
+    }
+  ]
+}

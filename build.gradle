@@ -19,6 +19,15 @@ loom {
             sourceSet sourceSets.client
         }
     }
+
+     runs {
+        client {
+            vmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+        }
+        server {
+            vmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
+        }
+    }
 }
 
 fabricApi {

@@ -23,19 +23,27 @@ public class NoccConfig {
             "^/tp\\b.*@a\\b" // examples — tune to taste
     );
     public List<String> bypassPatterns = List.of(
-            "^/(spawn|home|warp|msg|r|tpa|tpaccept)\\b"
-    );
+            "^/(spawn|home|warp|msg|r|tpa|tpaccept)\\b");
 
     private static final Path PATH = Path.of("config", "no-command-confirm.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static NoccConfig INSTANCE;
 
     public static NoccConfig get() {
-        if (INSTANCE == null) INSTANCE = load();
+        if (INSTANCE == null)
+            INSTANCE = load();
+        return INSTANCE;
+    }
+
+    public static NoccConfig get(boolean refresh) {
+        if (refresh)
+            INSTANCE = load();
         return INSTANCE;
     }
 
     public static void save() {
+        if (NoccClientInit.fromServer)
+            return;
         try {
             Files.createDirectories(PATH.getParent());
             try (Writer w = Files.newBufferedWriter(PATH)) {
@@ -48,10 +56,12 @@ public class NoccConfig {
 
     private static NoccConfig load() {
         try {
-            if (Files.exists(PATH)) try (Reader r = Files.newBufferedReader(PATH)) {
-                NoccConfig c = GSON.fromJson(r, NoccConfig.class);
-                if (c != null) return c;
-            }
+            if (Files.exists(PATH))
+                try (Reader r = Files.newBufferedReader(PATH)) {
+                    NoccConfig c = GSON.fromJson(r, NoccConfig.class);
+                    if (c != null)
+                        return c;
+                }
         } catch (IOException ignored) {
         }
         return new NoccConfig();
@@ -83,31 +93,34 @@ public class NoccConfig {
     }
 
     public boolean matchesAny(String s, List<Pattern> ps) {
-        for (var p : ps) if (p.matcher(s).find()) return true;
+        for (var p : ps)
+            if (p.matcher(s).find())
+                return true;
         return false;
     }
 
-
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static SimpleOption<ConfirmMode> confirmModeOption() {
         var cfg = NoccConfig.get();
 
-        Codec<ConfirmMode> codec = Codec.STRING.xmap(
-                s -> ConfirmMode.valueOf(s.toUpperCase(java.util.Locale.ROOT)),
-                m -> m.name().toLowerCase(java.util.Locale.ROOT)
-        );
+        Codec codec = NoccClientInit.serverLocked ? Codec.EMPTY.codec()
+                : Codec.STRING.xmap(
+                        s -> ConfirmMode.valueOf(s.toUpperCase(java.util.Locale.ROOT)),
+                        m -> m.name().toLowerCase(java.util.Locale.ROOT));
 
         return new SimpleOption<ConfirmMode>(
-                "nocc.options.confirm_mode",
-                t -> Tooltip.of(Text.translatable("nocc.options.confirm_mode.tooltip")),
-                (opt, value) ->
-                        Text.translatable("nocc.options.confirm_mode." + value.name().toLowerCase()),                         // value text mapper
+                NoccClientInit.serverLocked ? "nocc.options.confirm_mode.locked" : "nocc.options.confirm_mode",
+                t -> Tooltip.of(Text.translatable("nocc.options.confirm_mode.tooltip").append(" - ")
+                        .append(Text.translatable("nocc.options.confirm_mode." + t.name().toLowerCase() + ".tooltip"))),
+                (opt, value) -> Text.translatable("nocc.options.confirm_mode." + value.name().toLowerCase()),
                 new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(ConfirmMode.values()), codec),
                 cfg.mode,
                 newValue -> {
+                    if (NoccClientInit.serverLocked)
+                        return;
                     cfg.mode = newValue;
                     NoccConfig.save();
                     cfg.compile();
-                }
-        );
+                });
     }
 }
