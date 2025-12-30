@@ -9,5 +9,6 @@ public record ServerRules(
         Optional<List<String>> confirm,
         Optional<List<String>> bypass,
         boolean present) {
-    public static final ServerRules DEFAULT = new ServerRules("VANILLA", false, null, null, false);
+    public static final ServerRules DEFAULT = new ServerRules("VANILLA", false, Optional.empty(), Optional.empty(),
+            false);
 }

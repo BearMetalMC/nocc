@@ -14,12 +14,14 @@ public class NoccClientInit {
         ClientPlayNetworking.registerGlobalReceiver(NoccRulesPayload.ID, (payload, context) -> {
             Nocc.LOGGER.info("Received rules payload from server");
             if (!payload.present()) {
+                Nocc.LOGGER.info("No rules present in payload, reverting to local config");
                 serverLocked = false;
                 fromServer = false;
                 NoccConfig.get(true);
                 return;
             }
 
+            Nocc.LOGGER.info("Applying server rules");
             var cfg = NoccConfig.get();
             cfg.mode = ConfirmMode.valueOf(payload.mode().toUpperCase());
             if (payload.confirm().isPresent())
