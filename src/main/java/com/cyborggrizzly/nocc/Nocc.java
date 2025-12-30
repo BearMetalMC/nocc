@@ -37,7 +37,6 @@ public class Nocc implements ModInitializer {
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager,
                 success) -> {
             var rules = NoccServerState.rules();
-            LOGGER.info(rules.toString());
             for (ServerPlayer player : PlayerLookup.all(server)) {
                 Sync.sendTo(player, rules);
             }
