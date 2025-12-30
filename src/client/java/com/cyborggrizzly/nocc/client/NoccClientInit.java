@@ -1,16 +1,18 @@
 package com.cyborggrizzly.nocc.client;
 
+import com.cyborggrizzly.nocc.Nocc;
 import com.cyborggrizzly.nocc.net.NoccRulesPayload;
+
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.option.OnlineOptionsScreen;
 
 public class NoccClientInit {
     public static volatile boolean serverLocked = false;
     public static volatile boolean fromServer = false;
 
     public static void init() {
+
         ClientPlayNetworking.registerGlobalReceiver(NoccRulesPayload.ID, (payload, context) -> {
+            Nocc.LOGGER.info("Received rules payload from server");
             if (!payload.present()) {
                 serverLocked = false;
                 fromServer = false;
@@ -28,10 +30,13 @@ public class NoccClientInit {
             serverLocked = payload.locked();
             fromServer = true;
 
-            var mc = MinecraftClient.getInstance();
-            if (mc.currentScreen instanceof OnlineOptionsScreen oos) {
-                oos.init(mc, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight());
-            }
+            // Minecraft mc = Minecraft.getInstance();
+            // mc.execute(() -> {
+            // if (mc.screen instanceof OnlineOptionsScreen) {
+            // Nocc.LOGGER.info("Re-initializing current screen due to rule change");
+            // mc.screen.init(mc.getWindow().getWidth(), mc.getWindow().getHeight());
+            // }
+            // });
         });
     }
 }

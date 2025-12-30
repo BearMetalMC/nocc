@@ -2,9 +2,9 @@ package com.cyborggrizzly.nocc.client;
 
 import com.google.gson.*;
 import com.mojang.serialization.Codec;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.text.Text;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.Component;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 public class NoccConfig {
     public ConfirmMode mode = ConfirmMode.OFF;
     public List<String> confirmPatterns = List.of(
-            "^/(op|deop|ban|kick|pardon|whitelist)\\b",
-            "^/(stop|reload)\\b",
-            "^/(data|nbt|setblock|fill|clone|summon|give)\\b",
-            "^/tp\\b.*@a\\b" // examples — tune to taste
+            "^(op|deop|ban|kick|pardon|whitelist)\\b",
+            "^(stop|reload)\\b",
+            "^(data|nbt|setblock|fill|clone|summon|give)\\b",
+            "^tp\\b.*@a\\b" // examples — tune to taste
     );
     public List<String> bypassPatterns = List.of(
-            "^/(spawn|home|warp|msg|r|tpa|tpaccept)\\b");
+            "^(spawn|home|warp|msg|r|tpa|tpaccept)\\b");
 
     private static final Path PATH = Path.of("config", "no-command-confirm.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -100,20 +100,27 @@ public class NoccConfig {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static SimpleOption<ConfirmMode> confirmModeOption() {
+    public static OptionInstance<ConfirmMode> confirmModeOption() {
         var cfg = NoccConfig.get();
 
         Codec codec = NoccClientInit.serverLocked ? Codec.EMPTY.codec()
                 : Codec.STRING.xmap(
                         s -> ConfirmMode.valueOf(s.toUpperCase(java.util.Locale.ROOT)),
                         m -> m.name().toLowerCase(java.util.Locale.ROOT));
+        if (codec == null)
+            throw new IllegalStateException("Codec for ConfirmMode option is null");
 
-        return new SimpleOption<ConfirmMode>(
+        var list = List.<ConfirmMode>of(ConfirmMode.values());
+        if (list == null)
+            throw new IllegalStateException("ConfirmMode values list is null");
+
+        return new OptionInstance<ConfirmMode>(
                 NoccClientInit.serverLocked ? "nocc.options.confirm_mode.locked" : "nocc.options.confirm_mode",
-                t -> Tooltip.of(Text.translatable("nocc.options.confirm_mode.tooltip").append(" - ")
-                        .append(Text.translatable("nocc.options.confirm_mode." + t.name().toLowerCase() + ".tooltip"))),
-                (opt, value) -> Text.translatable("nocc.options.confirm_mode." + value.name().toLowerCase()),
-                new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(ConfirmMode.values()), codec),
+                t -> Tooltip.create(Component.translatable("nocc.options.confirm_mode.tooltip").append(" - ")
+                        .append(Component
+                                .translatable("nocc.options.confirm_mode." + t.name().toLowerCase() + ".tooltip"))),
+                (opt, value) -> Component.translatable("nocc.options.confirm_mode." + value.name().toLowerCase()),
+                new OptionInstance.Enum<>(list, codec),
                 cfg.mode,
                 newValue -> {
                     if (NoccClientInit.serverLocked)

@@ -2,11 +2,13 @@
   "nocc.options.confirm_mode": "Command Confirmations",
   "nocc.options.confirm_mode.dangerous_only": "Dangerous Only",
   "nocc.options.confirm_mode.dangerous_only.tooltip": "Only for potentially dangerous commands",
+  "nocc.options.confirm_mode.locked": "Command Confirmations (Locked by server)",
   "nocc.options.confirm_mode.off": "Disabled",
+  "nocc.options.confirm_mode.off.tooltip": "The confirmation pop up is disabled",
   "nocc.options.confirm_mode.safe_list_only": "Non-approved Only",
   "nocc.options.confirm_mode.safe_list_only.tooltip": "Disabled for non-approved items",
   "nocc.options.confirm_mode.tooltip": "Determine when the \"Confirm Command Execution\" permission pop up occurs",
   "nocc.options.confirm_mode.vanilla": "Vanilla",
-  "nocc.options.confirm_mode.locked": "Command Confirmations (Locked by server)",
+  "nocc.options.confirm_mode.vanilla.tooltip": "The default Minecraft behavior",
   "nocc.options.locked.tooltip": "The ability to change this setting has been locked by the server."
 }

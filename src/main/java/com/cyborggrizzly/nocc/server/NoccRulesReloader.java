@@ -2,11 +2,12 @@ package com.cyborggrizzly.nocc.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.cyborggrizzly.nocc.Nocc;
 import com.cyborggrizzly.nocc.net.ServerRules;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -15,39 +16,40 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public final class NoccRulesReloader implements SimpleSynchronousResourceReloadListener {
     private static final Gson GSON = new Gson();
-    public static final Identifier RELOAD_ID = Identifier.of("nocc", "server_rules");
+    public static final Identifier RELOAD_ID = Identifier.fromNamespaceAndPath(Nocc.MOD_ID.toLowerCase(),
+            "server_rules");
 
     @Override
     public Identifier getFabricId() {
         return RELOAD_ID;
     }
 
-    @Override
-    public void reload(ResourceManager manager) {
-        // Look for a single canonical file in any namespace:
-        // data/<ns>/nocc_config/settings.json
+    public void onResourceManagerReload(ResourceManager manager) {
+        Nocc.LOGGER.info("Reloading server rules from data packs");
         ServerRules chosen = null;
-        int chosenPriority = -1;
 
-        for (String ns : manager.getAllNamespaces()) {
-            Identifier id = Identifier.of(ns, "nocc_config/settings.json");
+        var namespaces = manager.getNamespaces();
+
+        for (String ns : namespaces) {
+            if (ns == null || ns.isEmpty())
+                continue;
+            Identifier id = Identifier.fromNamespaceAndPath(ns, "nocc_config/settings.json");
             try {
-                // Gather the resource stack so higher-priority packs override lower ones.
-                // (getAllResources is preserved across many MCs)
-                List<Resource> stack = manager.getAllResources(id);
-                for (int i = 0; i < stack.size(); i++) {
-                    Resource res = stack.get(i);
-                    var jo = GSON.fromJson(new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8),
-                            JsonObject.class);
-                    ServerRules r = jsonToRules(jo);
-                    // highest i == top priority (vanilla->topmost pack). pick the last.
-                    if (i >= chosenPriority) {
-                        chosenPriority = i;
-                        chosen = r;
-                    }
-                }
+                Optional<Resource> res = manager.getResource(id);
+                if (res.isEmpty())
+                    continue;
+                InputStreamReader reader = new InputStreamReader(res.get().open(), StandardCharsets.UTF_8);
+
+                ServerRules r = jsonToRules(GSON.fromJson(reader, JsonObject.class));
+
+                chosen = r;
+
+                Nocc.LOGGER.info("Loaded server rules from namespace: " + ns);
+                if (chosen != null)
+                    Nocc.LOGGER.info(chosen.toString());
             } catch (Exception ignored) {
-                // no file in this namespace, or API differences; continue
+                Nocc.LOGGER.warn("No server rules file found in namespace: " + ns);
+                Nocc.LOGGER.error(ignored.getMessage());
             }
         }
 
