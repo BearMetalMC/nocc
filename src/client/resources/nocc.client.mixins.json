@@ -4,10 +4,8 @@
   "package": "com.cyborggrizzly.nocc.client.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ClientPlayNetworkHandlerMixin",
-    "OnlineOptionScreenMixin",
-    "GameOptionsScreenAccessor",
-    "OptionListWidgetInvoker"
+    "ClientPacketListenerMixin",
+    "OnlineOptionScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,29 +1,35 @@
 package com.cyborggrizzly.nocc.client.mixins;
 
+import com.cyborggrizzly.nocc.Nocc;
 import com.cyborggrizzly.nocc.client.NoccConfig;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+
+import net.minecraft.client.multiplayer.ClientPacketListener;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientPlayNetworkHandler.class)
-public abstract class ClientPlayNetworkHandlerMixin {
+@Mixin(ClientPacketListener.class)
+public abstract class ClientPacketListenerMixin {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Inject(method = "parseCommand", at = @At("RETURN"), cancellable = true)
-    private void nocc$policyAdjust(String command, CallbackInfoReturnable cir) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Inject(method = "verifyCommand", at = @At("RETURN"), cancellable = true)
+    private void nocc$policyAdjust(String command, CallbackInfoReturnable<Enum<?>> cir) {
+        Nocc.LOGGER.info("Verifying command: " + command);
         var cfg = NoccConfig.get();
-        Object ret = cir.getReturnValue();
-        if (!(ret instanceof Enum<?> e)) return;
+        var ret = cir.getReturnValue();
+        if (!(ret instanceof Enum<?> e))
+            return;
 
         String name = e.name();
-        if ("SIGNATURE_REQUIRED".equals(name)) return; // keep safety
+        if ("SIGNATURE_REQUIRED".equals(name))
+            return; // keep safety
 
         boolean bypass = switch (cfg.mode) {
             case OFF -> true;
             case DANGEROUS_ONLY -> !cfg.matchesAny(command, cfg.confirm);
-            case SAFE_LIST_ONLY ->  cfg.matchesAny(command, cfg.bypass);
+            case SAFE_LIST_ONLY -> cfg.matchesAny(command, cfg.bypass);
             default -> false;
         };
 

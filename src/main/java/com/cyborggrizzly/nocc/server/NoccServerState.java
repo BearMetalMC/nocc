@@ -17,6 +17,9 @@ public final class NoccServerState {
     }
 
     public static void apply(ServerRules r) {
+        if (r == null)
+            r = ServerRules.DEFAULT;
+
         rules = r;
         if (r.confirm() != null && r.confirm().isPresent())
             confirm = compile(r.confirm().get());
