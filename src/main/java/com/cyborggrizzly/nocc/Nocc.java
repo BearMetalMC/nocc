@@ -17,30 +17,30 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 
 public class Nocc implements ModInitializer {
-    public static final String MOD_ID = "NoCC";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+  public static final String MOD_ID = "NoCC";
+  public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    @Override
-    public void onInitialize() {
-        ResourceLoader.get(PackType.SERVER_DATA).registerReloader(NoccRulesReloader.RELOAD_ID,
-                new NoccRulesReloader());
+  @Override
+  public void onInitialize() {
+    ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(NoccRulesReloader.RELOAD_ID,
+        new NoccRulesReloader());
 
-        PayloadTypeRegistry.playS2C().register(NoccRulesPayload.ID,
-                NoccRulesPayload.CODEC);
+    PayloadTypeRegistry.clientboundPlay().register(NoccRulesPayload.ID,
+        NoccRulesPayload.CODEC);
 
-        // send rules to players on join
-        ServerPlayConnectionEvents.JOIN
-                .register((handler, sender, server) -> Sync.sendTo(handler.player,
-                        NoccServerState.rules()));
+    // send rules to players on join
+    ServerPlayConnectionEvents.JOIN
+        .register((handler, sender, server) -> Sync.sendTo(handler.player,
+            NoccServerState.rules()));
 
-        // after reload, broadcast
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager,
-                success) -> {
-            var rules = NoccServerState.rules();
-            for (ServerPlayer player : PlayerLookup.all(server)) {
-                Sync.sendTo(player, rules);
-            }
-        });
+    // after reload, broadcast
+    ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager,
+        success) -> {
+      var rules = NoccServerState.rules();
+      for (ServerPlayer player : PlayerLookup.all(server)) {
+        Sync.sendTo(player, rules);
+      }
+    });
 
-    }
+  }
 }

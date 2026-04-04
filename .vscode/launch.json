@@ -2,30 +2,59 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach Client (5005)",
       "type": "java",
+      "name": "Minecraft Client",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "mainClass": "net.fabricmc.devlaunchinjector.Main",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/emma/repos/nocc/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotClient --sun-misc-unsafe-memory-access\u003dallow --enable-native-access\u003dALL-UNNAMED",
+      "args": "",
+      "env": {},
+      "projectName": "nocc"
+    },
+    {
+      "type": "java",
+      "name": "Data Generation",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/build/datagen",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "mainClass": "net.fabricmc.devlaunchinjector.Main",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/emma/repos/nocc/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric-api.datagen -Dfabric-api.datagen.output-dir\u003d/home/emma/repos/nocc/src/main/generated -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotClient --sun-misc-unsafe-memory-access\u003dallow --enable-native-access\u003dALL-UNNAMED",
+      "args": "",
+      "env": {},
+      "projectName": "nocc"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Client (Attach)",
       "request": "attach",
       "hostName": "localhost",
       "port": 5005,
       "preLaunchTask": "Run Client (bg)"
     },
     {
-      "name": "Attach Server (5006)",
       "type": "java",
+      "name": "Minecraft Server (Attach)",
       "request": "attach",
       "hostName": "localhost",
       "port": 5006,
       "preLaunchTask": "Run Server (bg)"
-    }
-  ],
-  "compounds": [
+    },
     {
-      "name": "Client + Server (attach)",
-      "configurations": [
-        "Attach Client (5005)",
-        "Attach Server (5006)"
-      ],
-      "stopAll": true
+      "type": "java",
+      "name": "Minecraft Server",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "integratedTerminal",
+      "stopOnEntry": false,
+      "mainClass": "net.fabricmc.devlaunchinjector.Main",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/emma/repos/nocc/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dserver -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotServer --sun-misc-unsafe-memory-access\u003dallow --enable-native-access\u003dALL-UNNAMED",
+      "args": "nogui",
+      "env": {},
+      "projectName": "nocc"
     }
   ]
 }

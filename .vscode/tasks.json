@@ -39,7 +39,7 @@
       "label": "Run Client (bg)",
       "type": "shell",
       "command": "./gradlew",
-      "args": ["runClient", "--console=plain"],
+      "args": ["runClient", "--debug-jvm", "--console=plain"],
       "options": { "cwd": "${workspaceFolder}" },
       "windows": { "command": "./gradlew.bat" },
       "isBackground": true,
@@ -53,7 +53,7 @@
           "background": {
             "activeOnStart": true,
             "beginsPattern": ".*Task :runClient.*",
-            "endsPattern": ".*Listening for transport dt_socket at address: 5005.*"
+            "endsPattern": ".*Listening for transport dt_socket.*"
           }
         }
       ],
@@ -63,7 +63,7 @@
       "label": "Run Server (bg)",
       "type": "shell",
       "command": "./gradlew",
-      "args": ["runServer", "--console=plain"],
+      "args": ["runServer", "--debug-jvm", "--console=plain"],
       "options": { "cwd": "${workspaceFolder}" },
       "windows": { "command": "./gradlew.bat" },
       "isBackground": true,
@@ -77,7 +77,7 @@
           "background": {
             "activeOnStart": true,
             "beginsPattern": ".*Task :runServer.*",
-            "endsPattern": ".*Listening for transport dt_socket at address: 5006.*"
+            "endsPattern": ".*Listening for transport dt_socket.*"
           }
         }
       ],

@@ -5,10 +5,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 public class NoccDataGenerator implements DataGeneratorEntrypoint {
 
-    @Override
-    public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+  @Override
+  public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+    FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-        pack.addProvider(NoccEnglishProvider::new);
-    }
+    pack.addProvider(NoccEnglishProvider::new);
+  }
 }

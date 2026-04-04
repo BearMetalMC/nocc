@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "ClientPacketListenerMixin",
-    "OnlineOptionScreenMixin"
+    "OnlineOptionScreenMixin",
+    "WorldOptionScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
