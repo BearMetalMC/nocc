@@ -1,38 +1,38 @@
 {
-  "schemaVersion": 1,
-  "id": "nocc",
-  "version": "${version}",
-  "name": "NoCC",
-  "description": "",
-  "authors": [
-    "Emmaline Autumn"
-  ],
-  "contact": {},
-  "license": "GPL-3.0",
-  "icon": "assets/nocc/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "fabric-datagen": [
-      "com.cyborggrizzly.nocc.client.NoccDataGenerator"
-    ],
-    "client": [
-      "com.cyborggrizzly.nocc.client.NoccClient"
-    ],
-    "main": [
-      "com.cyborggrizzly.nocc.Nocc"
-    ]
-  },
-  "mixins": [
-    "nocc.mixins.json",
-    {
-      "config": "nocc.client.mixins.json",
-      "environment": "client"
-    }
-  ],
-  "depends": {
-    "fabricloader": ">=0.18.2",
-    "minecraft": "~26.1.1",
-    "java": ">=25",
-    "fabric-api": "*"
-  }
+	"schemaVersion": 1,
+	"id": "nocc",
+	"version": "${version}",
+	"name": "NoCC",
+	"description": "",
+	"authors": [
+		"Emmaline Autumn"
+	],
+	"contact": {},
+	"license": "GPL-3.0",
+	"icon": "assets/nocc/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-datagen": [
+			"com.cyborggrizzly.nocc.client.NoccDataGenerator"
+		],
+		"client": [
+			"com.cyborggrizzly.nocc.client.NoccClient"
+		],
+		"main": [
+			"com.cyborggrizzly.nocc.Nocc"
+		]
+	},
+	"mixins": [
+		"nocc.mixins.json",
+		{
+			"config": "nocc.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.18.2",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
 }

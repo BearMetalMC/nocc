@@ -16,21 +16,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OnlineOptionsScreen.class)
 public abstract class OnlineOptionScreenMixin extends OptionsSubScreen {
-    private OnlineOptionScreenMixin() {
-        super(null, null, null);
-    }
+	private static final Component NOCC_HEADER = Component.translatable("nocc.options.header");
 
-    @Inject(method = "addOptions", at = @At("TAIL"))
-    private void nocc$addToggle(CallbackInfo ci) {
-        Nocc.LOGGER.info("Creating OnlineOptionsScreen widget");
+	private OnlineOptionScreenMixin() {
+		super(null, null, null);
+	}
 
-        var opt = NoccConfig.confirmModeOption();
+	@Inject(method = "addOptions", at = @At("TAIL"))
+	private void nocc$addToggle(CallbackInfo ci) {
+		Nocc.LOGGER.info("Creating OnlineOptionsScreen widget");
 
-        this.list.addBig(opt);
+		var opt = NoccConfig.confirmModeOption();
 
-        this.list.findOption(opt).active = !NoccClientInit.serverLocked;
-        this.list.findOption(opt).setTooltip(
-                NoccClientInit.serverLocked ? Tooltip.create(Component.translatable("nocc.options.locked.tooltip"))
-                        : null);
-    }
+		this.list.addHeader(NOCC_HEADER);
+		this.list.addBig(opt);
+
+		this.list.findOption(opt).active = !NoccClientInit.serverLocked;
+		this.list.findOption(opt).setTooltip(
+				NoccClientInit.serverLocked ? Tooltip.create(Component.translatable("nocc.options.locked.tooltip"))
+						: null);
+	}
 }
