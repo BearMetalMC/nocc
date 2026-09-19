@@ -22,7 +22,7 @@ public abstract class WorldOptionScreenMixin extends Screen {
     super(null);
   }
 
-  @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToFooter(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"))
+  @Inject(method = "generalOptions", at = @At("TAIL"))
   private void nocc$addToggle(CallbackInfo ci, @Local GridLayout.RowHelper gridHelper) {
     Nocc.LOGGER.info("Creating WorldOptionsScreen widget");
 
