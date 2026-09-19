@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.options.WorldOptionsScreen;
+import net.minecraft.client.gui.screens.WorldOptionsScreen;
 import net.minecraft.network.chat.Component;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,7 +29,6 @@ public abstract class WorldOptionScreenMixin extends Screen {
     var opt = NoccConfig.confirmModeOption();
     var widget = opt.createButton(this.minecraft.options, 0, 0, 310);
 
-    // Span both columns so it sits as a full-width row like a "big" option
     gridHelper.addChild(widget, 2);
 
     widget.active = !NoccClientInit.serverLocked;
