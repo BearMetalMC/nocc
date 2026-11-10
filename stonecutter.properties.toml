@@ -2,7 +2,7 @@
 mod.id = "nocc"
 mod.name = "NoCC"
 mod.group = "com.cyborggrizzly"
-mod.version = "1.4.1"
+mod.version = "1.5.0"
 
 deps.fabric_loader = "0.19.5"
 loomx.loom_version = "1.17-SNAPSHOT"
