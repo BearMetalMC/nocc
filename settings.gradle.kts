@@ -28,8 +28,8 @@ stonecutter {
             for (loader in loaders) version("$mc-$loader", mc).buildscript("build.$loader.gradle.kts")
         }
 
-        match("1.21.10", "neoforge")
-        match("26.3", "fabric")
+        match("1.21.10", "fabric", "forge", "neoforge")
+        match("26.3", "fabric", "forge", "neoforge")
         vcsVersion = "26.3-fabric"
     }
 }

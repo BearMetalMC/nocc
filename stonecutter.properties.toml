@@ -10,12 +10,29 @@ loomx.loom_version = "1.17-SNAPSHOT"
 # To add a target: register it in settings.gradle.kts, then add a
 # [<loader>."<mc>"] table here with the keys the matching build script reads.
 
+[fabric."1.21.10"]
+# Range written to fabric.mod.json
+mod.mc_compat = "1.21.10"
+deps.fabric_api = "0.138.4+1.21.10"
+
+[forge."1.21.10"]
+# Range written to mods.toml
+mod.mc_compat = "[1.21.10]"
+deps.forge = "60.1.18"
+
 [neoforge."1.21.10"]
 # Range written to neoforge.mods.toml
 mod.mc_compat = "[1.21.10]"
 deps.neo_loader = "21.10.64"
 
 [fabric."26.3"]
-# Range written to fabric.mod.json
 mod.mc_compat = "~26.3"
 deps.fabric_api = "0.161.0+26.3"
+
+[forge."26.3"]
+mod.mc_compat = "[26.3,26.4)"
+deps.forge = "66.1.5"
+
+[neoforge."26.3"]
+mod.mc_compat = "[26.3,26.4)"
+deps.neo_loader = "26.3.0.102"

@@ -1,5 +1,7 @@
 plugins {
     id("net.neoforged.moddev") version "2.0.148"
+    // Lets only one NeoForge target set up Minecraft at a time
+    id("neoforge-mutex")
 }
 
 version = "${sc.properties["mod.version"]}+${sc.current.version}"
@@ -57,6 +59,8 @@ tasks {
             register("name", sc.properties["mod.name"])
             register("version", sc.properties["mod.version"])
             register("minecraft", sc.properties["mod.mc_compat"])
+            // NeoForge for 26.x deprecates logoFile in favour of iconFile
+            register("icon_key", if (sc.current.parsed >= "26.1") "iconFile" else "logoFile")
         }
         filesMatching("META-INF/neoforge.mods.toml") { expand(props) }
 
@@ -65,11 +69,9 @@ tasks {
         inputs.property("extra_client_mixins", extraMixins)
         filesMatching("*.mixins.json") { expand("extra_client_mixins" to extraMixins) }
 
-        exclude("fabric.mod.json")
+        exclude("fabric.mod.json", "META-INF/mods.toml")
     }
 
-    // When a second NeoForge target is added, serialise this task across targets
-    // (see neoforge-mutex in stonecutter-template-multiloader) to keep memory use sane.
     named("createMinecraftArtifacts") {
         dependsOn("stonecutterGenerate")
     }

@@ -63,7 +63,7 @@ tasks {
         inputs.property("extra_client_mixins", extraMixins)
         filesMatching("*.mixins.json") { expand("extra_client_mixins" to extraMixins) }
 
-        exclude("META-INF/neoforge.mods.toml")
+        exclude("META-INF/neoforge.mods.toml", "META-INF/mods.toml")
     }
 
     withType<Jar> {

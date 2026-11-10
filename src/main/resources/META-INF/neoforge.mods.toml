@@ -9,7 +9,7 @@ displayName = "${name}"
 version = "${version}"
 authors = "Emmaline Autumn"
 description = ""
-logoFile = "assets/nocc/icon.png"
+${icon_key} = "assets/nocc/icon.png"
 
 [[mixins]]
 config = "nocc.client.mixins.json"
