@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "nocc",
+	"id": "${id}",
 	"version": "${version}",
-	"name": "NoCC",
+	"name": "${name}",
 	"description": "",
 	"authors": [
 		"Emmaline Autumn"
@@ -12,27 +12,23 @@
 	"icon": "assets/nocc/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"fabric-datagen": [
-			"com.cyborggrizzly.nocc.client.NoccDataGenerator"
-		],
 		"client": [
-			"com.cyborggrizzly.nocc.client.NoccClient"
+			"com.cyborggrizzly.nocc.platform.fabric.NoccFabricClient"
 		],
 		"main": [
-			"com.cyborggrizzly.nocc.Nocc"
+			"com.cyborggrizzly.nocc.platform.fabric.NoccFabric"
 		]
 	},
 	"mixins": [
-		"nocc.mixins.json",
 		{
 			"config": "nocc.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.18.2",
-		"minecraft": "~26.3",
-		"java": ">=25",
+		"fabricloader": ">=${loader}",
+		"minecraft": "${minecraft}",
+		"java": ">=${java}",
 		"fabric-api": "*"
 	}
 }

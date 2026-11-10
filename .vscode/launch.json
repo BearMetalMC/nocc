@@ -16,19 +16,6 @@
     },
     {
       "type": "java",
-      "name": "Data Generation",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/build/datagen",
-      "console": "integratedTerminal",
-      "stopOnEntry": false,
-      "mainClass": "net.fabricmc.devlaunchinjector.Main",
-      "vmArgs": "-Dfabric.dli.config\u003d/home/emma/repos/nocc/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric-api.datagen -Dfabric-api.datagen.output-dir\u003d/home/emma/repos/nocc/src/main/generated -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotClient --sun-misc-unsafe-memory-access\u003dallow --enable-native-access\u003dALL-UNNAMED",
-      "args": "",
-      "env": {},
-      "projectName": "nocc"
-    },
-    {
-      "type": "java",
       "name": "Minecraft Client (Attach)",
       "request": "attach",
       "hostName": "localhost",

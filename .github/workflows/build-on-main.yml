@@ -9,20 +9,25 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 21
+    # 21 for the 1.21.x targets, 25 for 26.x and for Gradle itself (listed last = default JAVA_HOME)
+    - name: Set up JDKs
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: 21
+        java-version: |
+          21
+          25
         cache: 'gradle'
     - name: Grant execute permission to gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
+    - name: Build all targets
       run: ./gradlew build
     - uses: actions/upload-artifact@v4
       with:
-        name: "Compiled artifacts for Pull Request #${{github.event.number}}"
-        path: build/libs
+        name: nocc-jars
+        path: versions/*/build/libs/*.jar

@@ -1,5 +1,7 @@
 package com.cyborggrizzly.nocc.client.mixins;
 
+// WorldOptionsScreen was added in 26.1; this mixin is also left out of the mixin config before that
+//? if >=26.1 {
 import com.cyborggrizzly.nocc.Nocc;
 import com.cyborggrizzly.nocc.client.NoccClientInit;
 import com.cyborggrizzly.nocc.client.NoccConfig;
@@ -38,3 +40,4 @@ public abstract class WorldOptionScreenMixin extends Screen {
             : null);
   }
 }
+//?}

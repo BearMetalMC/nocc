@@ -1,9 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.cyborggrizzly.nocc.mixin",
+  "package": "com.cyborggrizzly.nocc.client.mixins",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
+  "client": [
+    "ClientPacketListenerMixin",
+    "OnlineOptionScreenMixin"${extra_client_mixins}
   ],
   "injectors": {
     "defaultRequire": 1

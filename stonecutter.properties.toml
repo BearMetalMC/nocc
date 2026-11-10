@@ -1,0 +1,21 @@
+# Shared by every target. Version/loader specific values live in the tables below.
+mod.id = "nocc"
+mod.name = "NoCC"
+mod.group = "com.cyborggrizzly"
+mod.version = "1.4.1"
+
+deps.fabric_loader = "0.19.5"
+loomx.loom_version = "1.17-SNAPSHOT"
+
+# To add a target: register it in settings.gradle.kts, then add a
+# [<loader>."<mc>"] table here with the keys the matching build script reads.
+
+[neoforge."1.21.10"]
+# Range written to neoforge.mods.toml
+mod.mc_compat = "[1.21.10]"
+deps.neo_loader = "21.10.64"
+
+[fabric."26.3"]
+# Range written to fabric.mod.json
+mod.mc_compat = "~26.3"
+deps.fabric_api = "0.161.0+26.3"

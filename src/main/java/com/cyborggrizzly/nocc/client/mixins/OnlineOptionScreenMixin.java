@@ -28,6 +28,8 @@ public abstract class OnlineOptionScreenMixin extends OptionsSubScreen {
 
 		var opt = NoccConfig.confirmModeOption();
 
+		// Section headers in option lists arrived in 26.1
+		//? if >=26.1
 		this.list.addHeader(NOCC_HEADER);
 		this.list.addBig(opt);
 

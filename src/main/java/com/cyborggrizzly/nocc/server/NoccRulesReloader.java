@@ -4,26 +4,21 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.cyborggrizzly.nocc.Nocc;
 import com.cyborggrizzly.nocc.net.ServerRules;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@SuppressWarnings("deprecation")
-public final class NoccRulesReloader implements SimpleSynchronousResourceReloadListener {
+public final class NoccRulesReloader implements ResourceManagerReloadListener {
     private static final Gson GSON = new Gson();
     public static final Identifier RELOAD_ID = Identifier.fromNamespaceAndPath(Nocc.MOD_ID.toLowerCase(),
             "server_rules");
 
     @Override
-    public Identifier getFabricId() {
-        return RELOAD_ID;
-    }
-
     public void onResourceManagerReload(ResourceManager manager) {
         Nocc.LOGGER.info("Reloading server rules from data packs");
         ServerRules chosen = null;
